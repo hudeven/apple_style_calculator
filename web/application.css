@@ -1,0 +1,55 @@
+/*
+.container {
+  background-color: blue;
+
+}
+
+.row { 
+  background-color: yellow;
+}
+
+.btn-group {
+  background-color: red;
+}
+*/
+
+#cal-display {
+  height: 42px;
+  font-size: 42px;
+  line-height: 35px;
+  text-align: right;
+}
+
+.btn {
+  width: 30%;
+  height: 60px;
+  line-height: 50px;
+  font-weight: bold;
+  font-size: 30px;
+
+}
+
+.btn-default {
+  background-color: #FAFAFA
+}
+
+.btn-warning {
+  background-color: darkorange;
+}
+
+.left-half {
+  width: 50%;
+  float: left;
+}
+.right-half {
+  width: 50%;
+  /* float : right;  a narrow edge will appear! */
+}
+
+
+
+
+
+
+
+
