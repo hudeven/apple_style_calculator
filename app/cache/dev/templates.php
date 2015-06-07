@@ -78,6 +78,8 @@
   'DoctrineBundle:Collector:explain.html.twig' => '/home/webapp/websites/apple_style_calculator/vendor/doctrine/doctrine-bundle/Resources/views/Collector/explain.html.twig',
   'DoctrineBundle:Collector:db.html.twig' => '/home/webapp/websites/apple_style_calculator/vendor/doctrine/doctrine-bundle/Resources/views/Collector/db.html.twig',
   'AcmeCalculatorBundle:Default:index.html.twig' => '/home/webapp/websites/apple_style_calculator/src/Acme/CalculatorBundle/Resources/views/Default/index.html.twig',
+  'AcmeCalculatorBundle:Calculator:index.html.twig.bk' => '/home/webapp/websites/apple_style_calculator/src/Acme/CalculatorBundle/Resources/views/Calculator/index.html.twig.bk',
+  'AcmeCalculatorBundle:Calculator:calculate.html.twig' => '/home/webapp/websites/apple_style_calculator/src/Acme/CalculatorBundle/Resources/views/Calculator/calculate.html.twig',
   'AcmeCalculatorBundle:Calculator:index.html.twig' => '/home/webapp/websites/apple_style_calculator/src/Acme/CalculatorBundle/Resources/views/Calculator/index.html.twig',
   'DebugBundle:Profiler:dump.html.twig' => '/home/webapp/websites/apple_style_calculator/vendor/symfony/symfony/src/Symfony/Bundle/DebugBundle/Resources/views/Profiler/dump.html.twig',
   'AcmeDemoBundle:Secured:helloadmin.html.twig' => '/home/webapp/websites/apple_style_calculator/src/Acme/DemoBundle/Resources/views/Secured/helloadmin.html.twig',

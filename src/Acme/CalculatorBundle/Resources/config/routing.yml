@@ -4,4 +4,8 @@ acme_calculator_homepage:
 
 calculator:
     path:     /calculator/{opt}/{op1}/{op2}
+    defaults: { _controller: AcmeCalculatorBundle:Calculator:calculate }
+
+main:
+    path:     /calculator/main
     defaults: { _controller: AcmeCalculatorBundle:Calculator:index }
