@@ -1,2 +1,4 @@
-# apple_style_calculator
-This is a basic calculator with Apple style UI. Built by PHP Symfony framework, Bootstrap, jQuery.
+my_project
+==========
+
+A Symfony project created on May 28, 2015, 5:28 pm.

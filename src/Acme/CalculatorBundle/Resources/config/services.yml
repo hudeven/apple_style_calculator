@@ -1,0 +1,4 @@
+services:
+#    acme_calculator.example:
+#        class: Acme\CalculatorBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]

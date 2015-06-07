@@ -1,0 +1,7 @@
+acme_calculator_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: AcmeCalculatorBundle:Default:index }
+
+calculator:
+    path:     /calculator/{opt}/{op1}/{op2}
+    defaults: { _controller: AcmeCalculatorBundle:Calculator:index }
