@@ -122,21 +122,28 @@ BasicCalculator.prototype.calculate_remote = function() {
       optStr = "divide";
       break;
   }
-  var urlStr = "http://calculator.hudeven.com/app_dev.php/calculator/"+ optStr +"/"+ this.op1 +"/" + this.op2;
-  data = $.parseJSON($.ajax({
+  var statusCodeResponses;
+  var urlStr = "http://calculator.hudeven.com/calculator/"+ optStr +"/"+ this.op1 +"/" + this.op2;
+  var cal_response = $.ajax({
         type: "GET",
         url: urlStr,
         async: false
-    }).responseText);
+    });
 
-  if (data.error) {
-    alert(data.error);
+  if (cal_response.status != 200) {
+    alert("Invalid operation!\n\n\n" + cal_response.responseText);
     return;
+  } 
+  
+  var data = $.parseJSON(cal_response.responseText);
+  if (data.error) {  
+    alert(data.error);
+  } else {
+    this.setDisplay(data.result);
+    // move result to op1 for continuous calculation
+    this.op1 = data.result;
   }
-
-  this.setDisplay(data.result);
-  // move result to op1 for continuous calculation
-  this.op1 = this.result;
+  
 };
 
 // calculate result by browser

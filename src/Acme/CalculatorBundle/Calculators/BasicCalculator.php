@@ -1,4 +1,10 @@
 <?php
+/** 
+  * @desc this class will provide server Calculator interface to client
+  * @author Steven Liu
+  * @date 06/03/2015
+*/
+
 namespace Acme\CalculatorBundle\Calculators;
 
 use Symfony\Component\Validator\Constraints as Assert;
@@ -44,6 +50,7 @@ class BasicCalculator {
         $this->op2 = $op2;
     }
 
+    // calculate result by calling same name method
     public function execute(){
 	   $result = 0;
       /*
@@ -82,6 +89,7 @@ class BasicCalculator {
         return $this->op1 * $this->op2;
     }
 
+    // todo: fix '-INF' bug
     public function divide () {
         $op2 = (string)$this->op2;
         

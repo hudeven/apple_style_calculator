@@ -12,7 +12,7 @@ use Acme\CalculatorBundle\Calculators\BasicCalculator;
 class CalculatorController extends Controller
 {
     /**
-     * @Route("/calculator/main", name="mainUI")
+     * @Route("/", name="main")
      */
     public function indexAction()
     {

@@ -128,21 +128,17 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
         }
 
         // acme_calculator_homepage
-        if (0 === strpos($pathinfo, '/hello') && preg_match('#^/hello/(?P<name>[^/]++)$#s', $pathinfo, $matches)) {
-            return $this->mergeDefaults(array_replace($matches, array('_route' => 'acme_calculator_homepage')), array (  '_controller' => 'Acme\\CalculatorBundle\\Controller\\DefaultController::indexAction',));
+        if (rtrim($pathinfo, '/') === '') {
+            if (substr($pathinfo, -1) !== '/') {
+                return $this->redirect($pathinfo.'/', 'acme_calculator_homepage');
+            }
+
+            return array (  '_controller' => 'Acme\\CalculatorBundle\\Controller\\CalculatorController::indexAction',  '_route' => 'acme_calculator_homepage',);
         }
 
-        if (0 === strpos($pathinfo, '/calculator')) {
-            // calculator
-            if (preg_match('#^/calculator/(?P<opt>[^/]++)/(?P<op1>[^/]++)/(?P<op2>[^/]++)$#s', $pathinfo, $matches)) {
-                return $this->mergeDefaults(array_replace($matches, array('_route' => 'calculator')), array (  '_controller' => 'Acme\\CalculatorBundle\\Controller\\CalculatorController::calculateAction',));
-            }
-
-            // main
-            if ($pathinfo === '/calculator/main') {
-                return array (  '_controller' => 'Acme\\CalculatorBundle\\Controller\\CalculatorController::indexAction',  '_route' => 'main',);
-            }
-
+        // calculator
+        if (0 === strpos($pathinfo, '/calculator') && preg_match('#^/calculator/(?P<opt>[^/]++)/(?P<op1>[^/]++)/(?P<op2>[^/]++)$#s', $pathinfo, $matches)) {
+            return $this->mergeDefaults(array_replace($matches, array('_route' => 'calculator')), array (  '_controller' => 'Acme\\CalculatorBundle\\Controller\\CalculatorController::calculateAction',));
         }
 
         // homepage

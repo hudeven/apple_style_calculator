@@ -10,7 +10,7 @@ class CalculatorControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/calculator/main');
+        $crawler = $client->request('GET', '/');
 
         $this->assertTrue($crawler->filter('html:contains("Apple Style Calculator")')->count() > 0);
     }
@@ -71,6 +71,23 @@ class CalculatorControllerTest extends WebTestCase
 	$this->assertSame(array('result' => 'INF', 'error' => ''), $data);
 
     }
+
+/*  bug: 500 server internal error
+    public function testOverflow()
+    {
+       $client = static::createClient();
+
+        $client->request('GET', '/calculator/multiply/3.025764e+200/3.025764e+200');
+	
+        $response = $client->getResponse();
+	
+        $data = json_decode($response->getContent(), true);
+
+	$this->assertSame(array('result' => 'INF', 'error' => ''), $data);
+
+    }
+*/
+
 /*
     public function testInvalidOp1()
     {

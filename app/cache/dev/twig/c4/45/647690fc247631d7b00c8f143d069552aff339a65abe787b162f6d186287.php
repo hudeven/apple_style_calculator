@@ -99,6 +99,12 @@ class __TwigTemplate_c445647690fc247631d7b00c8f143d069552aff339a65abe787b162f6d1
       </div>
     </div>
 
+<footer>
+  <p>Posted by: Hege Refsnes</p>
+  <p>Contact information: <a href=\"mailto:someone@example.com\">
+  someone@example.com</a>.</p>
+</footer>
+
   </body>
 </html>
 ";
@@ -131,6 +137,6 @@ class __TwigTemplate_c445647690fc247631d7b00c8f143d069552aff339a65abe787b162f6d1
 
     public function getDebugInfo()
     {
-        return array (  121 => 14,  118 => 13,  111 => 10,  108 => 9,  38 => 16,  36 => 13,  33 => 12,  31 => 9,  21 => 1,);
+        return array (  127 => 14,  124 => 13,  117 => 10,  114 => 9,  38 => 16,  36 => 13,  33 => 12,  31 => 9,  21 => 1,);
     }
 }

@@ -129,7 +129,7 @@ class BasicCalculatorTest extends \PHPUnit_Framework_TestCase
         $cal = new BasicCalculator('subtract', '45e3', '41e32112');
         $this->assertEquals('-INF', $cal->execute());
 
-        $cal = new BasicCalculator('multiply', '82e1444', 78);
+        $cal = new BasicCalculator('multiply', '1.3311444483175e+178 ', '1.3311444483175e+178' );
         $this->assertEquals(BasicCalculator::INFINITE_VALUE, $cal->execute());
 
         $cal = new BasicCalculator('divide', '1234', '4.32e112');
