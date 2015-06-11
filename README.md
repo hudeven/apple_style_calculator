@@ -6,7 +6,7 @@ Front end:
 
             imitate apple's calculator UI by Bootstrap
             imitate apple's calculator logic by a State Machine
-            (see https://drive.google.com/file/d/0B1Hq0bTtC061TDJIMmJ1c3JHNnc/view?usp=sharing)
+            ( see https://drive.google.com/file/d/0B1Hq0bTtC061TDJIMmJ1c3JHNnc/view?usp=sharing )
             call remote server API by jQuert and AJAX to calculate result
 
 Back end:   
