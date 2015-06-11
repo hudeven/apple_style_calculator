@@ -25,15 +25,22 @@
 
     <div class="container col-md-6 col-md-offset-3">
       <div class="row">
+            <div id="cal-error"></div>
+      </div>
+
+      <div class="row">
             <input type="text" id="cal-display">
       </div>
 
       <div class="row" id="cal-panel">
           
             <div class="btn-group btn-group-justified">
-              <a href="#" class="btn-clear btn btn-default span1" id="btn-clear">C</a>
-              <a href="#" class="btn-general btn btn-default" >&plusmn;</a>
-              <a href="#" class="btn-general btn btn-default" >%</a>
+              <a href="#" class="btn-clear btn btn-default span1" id="btn-clear" data-type="clr" data-value="c">C</a>
+
+              <a href="#" class="btn-general btn btn-default" data-type="rev" data-value="r">&plusmn;</a>
+
+              <a href="#" class="btn-general btn btn-default" data-type="per" data-value="%">%</a>
+
               <a href="#" class="btn-general btn btn-warning" data-type="opt" data-value="/">&divide;</a>
             </div>
           

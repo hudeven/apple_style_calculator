@@ -5,7 +5,8 @@
 */
 function BasicCalculator (display) {
   this.display = display; // <input type=text ...> element
-  this.MAX_DISPLAY_LENGTH = 30;
+  this.MAX_DISPLAY_LENGTH = 1000;
+  this.INFINITE_VALUE = "INF";
 
   this.STATES =  {
     START : 0, 
@@ -20,6 +21,8 @@ function BasicCalculator (display) {
     DOT: "dot",
     OPERATION: "opt",
     EQUAL: "equ",
+    PERCENT: "per",
+    REVERSE: "rev",
     UNKOWN: "unk"
   }
   this.clear();
@@ -38,11 +41,35 @@ BasicCalculator.prototype.appendDisplay = function(value) {
 // set display to a string
 BasicCalculator.prototype.setDisplay = function(value) {
   var str = value.toString();
+  
   if(str.length > this.MAX_DISPLAY_LENGTH) {
     alert("can't display String longer than " + this.MAX_DISPLAY_LENGTH);
     return;
   }
+  
   this.display.value = value;
+}
+
+// reverse display to a string
+BasicCalculator.prototype.reverseDisplay = function() {
+  if (this.display.value[0] == "-")
+    this.display.value = this.display.value.substr(1);
+  else
+    this.display.value = '-' + this.display.value;
+}
+
+// get value of display
+BasicCalculator.prototype.getDisplay = function() {
+  if (this.display.value.length > this.MAX_DISPLAY_LENGTH) {
+    alert("can't calculate with a number longer than " + this.MAX_DISPLAY_LENGTH + " !");
+    return 0;
+  } 
+
+  if (this.display.value == this.INFINITE_VALUE) {
+    //alert("can't calculate with an infinite number!");
+    return 0;
+  }
+  return this.display.value;
 }
 
 // clear display and initialize calculator
@@ -66,6 +93,10 @@ BasicCalculator.prototype.getKeyType = function(value) {
     type = this.TYPE.DOT;
   else if (value  == '=')
     type = this.TYPE.EQUAL;
+  else if (value == '%')
+    type = this.PERCENT;
+  else if (value == "r")
+    type = this.REVERSE;
   else
     type = this.TYPE.UNKOWN;
 
@@ -75,7 +106,7 @@ BasicCalculator.prototype.getKeyType = function(value) {
 // calculate result by server API, AJAX
 // display result and copy result to op1
 BasicCalculator.prototype.calculate_remote = function() {
-  this.op2 = this.display.value;
+  this.op2 = this.getDisplay();
   var optStr;
   switch (this.opt) {
     case "+":
@@ -92,13 +123,18 @@ BasicCalculator.prototype.calculate_remote = function() {
       break;
   }
   var urlStr = "http://calculator.hudeven.com/app_dev.php/calculator/"+ optStr +"/"+ this.op1 +"/" + this.op2;
-  this.result = $.ajax({
+  data = $.parseJSON($.ajax({
         type: "GET",
         url: urlStr,
         async: false
-    }).responseText;
+    }).responseText);
 
-  this.setDisplay(this.result);
+  if (data.error) {
+    alert(data.error);
+    return;
+  }
+
+  this.setDisplay(data.result);
   // move result to op1 for continuous calculation
   this.op1 = this.result;
 };
@@ -106,7 +142,7 @@ BasicCalculator.prototype.calculate_remote = function() {
 // calculate result by browser
 // display result and copy result to op1
 BasicCalculator.prototype.calculate = function() {
-  this.op2 = this.display.value;
+  this.op2 = this.getDisplay();
   var op1 = Number(this.op1)
   var op2 = Number(this.op2)
   switch (this.opt) {
@@ -128,8 +164,19 @@ BasicCalculator.prototype.calculate = function() {
   this.op1 = this.result;
 }
 
+// a state machine to dicide what to do in each state
+// see state diagram in @AcmeCalculatorBundle/docs/calculator_state_machine.jpg
 BasicCalculator.prototype.state_machine = function(type, value) {
+  if (type == this.TYPE.PERCENT) {
+    this.setDisplay(this.getDisplay() / 100);
+    return;
+  } else if (type == this.TYPE.REVERSE) {
+    this.reverseDisplay();
+    return;
+  }
+
   switch (this.state) {
+    
     case this.STATES.START:
       switch (type) {
         case this.TYPE.DIGIT:
@@ -142,17 +189,18 @@ BasicCalculator.prototype.state_machine = function(type, value) {
           break;
         case this.TYPE.OPERATION:
           this.state = this.STATES.C;
-	  this.opt = value;
-          this.op1 = this.display.value;
+	        this.opt = value;
+          this.op1 = this.getDisplay();
           break;
         case this.TYPE.EQUAL:// do nothing
 	        // stay same state
 	        this.calculate_remote();
           break;
-	default:
-	  // invalid operation!
+	      default:
+	        // invalid operation!
       }
       break;
+
     case this.STATES.A:
       switch (type) {
         case this.TYPE.DIGIT:
@@ -162,112 +210,117 @@ BasicCalculator.prototype.state_machine = function(type, value) {
         case this.TYPE.DOT:
           this.state = this.STATES.B;
           this.appendDisplay(value);
-	  break;
+	        break;
         case this.TYPE.OPERATION:
           this.state = this.STATES.C;
           this.opt = value;
-          this.op1 = this.display.value;
+          this.op1 = this.getDisplay();
           break;
         case this.TYPE.EQUAL:
           this.state = this.STATES.START;
           break;
         default:
-	   alert("invalid operation!");
+	        alert("invalid operation!");
       }
       break;
+
    case this.STATES.B:
      switch(type) {
-	case this.TYPE.DIGIT:
-	  // stay same state
-	  this.appendDisplay(value);
-	  break;
-	case this.TYPE.DOT:
-	  // stay same state
-	  break;
-	case this.TYPE.OPERATION:
-	  this.state = this.STATES.C;
-	  this.opt = value
-	  this.op1 = this.display.value;
-	  break;
-	case this.TYPE.EQUAL:
-	  this.state = this.STATES.S;
-	  break;
-	default:
-	   alert("invalid operation!");
+	      case this.TYPE.DIGIT:
+	        // stay same state
+	        this.appendDisplay(value);
+	        break;
+	      case this.TYPE.DOT:
+	        // stay same state
+	        break;
+	      case this.TYPE.OPERATION:
+	        this.state = this.STATES.C;
+	        this.opt = value
+	        this.op1 = this.getDisplay();
+	        break;
+	      case this.TYPE.EQUAL:
+	        this.state = this.STATES.S;
+	        break;
+	      default:
+	        alert("invalid operation!");
      }
      break;
-   case this.STATES.C:
+
+    case this.STATES.C:
       switch (type) {
         case this.TYPE.DIGIT:
-          this.state = this.STATES.D;
-	  this.setDisplay(value); 
-          break;
-	case this.TYPE.DOT:
-	  this.state = this.STATES.E;
-	  this.setDisplay(value); 
-	  break;
-	case this.TYPE.OPERATION:
-	  // stay same state
-	  this.opt = value;
-	  break;
-	case this.TYPE.EQUAL:
-	  this.state = this.STATES.START;
-	  this.calculate_remote();
-	default:
-	   alert("invalid operation!");
+        this.state = this.STATES.D;
+	      this.setDisplay(value); 
+        break;
+	    case this.TYPE.DOT:
+	      this.state = this.STATES.E;
+	      this.setDisplay(value); 
+	       break;
+	    case this.TYPE.OPERATION:
+	      // stay same state
+	      this.opt = value;
+	      break;
+	    case this.TYPE.EQUAL:
+	      this.state = this.STATES.START;
+	      this.calculate_remote();
+	    default:
+	      alert("invalid operation!");
       }
       break;
-   case this.STATES.D:
+
+    case this.STATES.D:
       switch (type) {
         case this.TYPE.DIGIT:
-	  // stay same state
-	  this.appendDisplay(value);
-	  break;
-	case this.TYPE.DOT:
-	  this.state = this.STATES.E;
-	  this.appendDisplay(value);
-	  break;
+	        // stay same state
+	        this.appendDisplay(value);
+	        break;
+	      case this.TYPE.DOT:
+	        this.state = this.STATES.E;
+	        this.appendDisplay(value);
+	        break;
         case this.TYPE.OPERATION:
-	  // consider the priority order
-	  // 1 + 2 * 3 = 7,  1 * 2 + 3 = 5
-	  this.state = this.STATES.C;
-	  this.calculate_remote();
+	        // consider the priority order
+	        // 1 + 2 * 3 = 7,  1 * 2 + 3 = 5
+	        this.state = this.STATES.C;
+	        this.calculate_remote();
           this.opt = value;
-	  break;
+	        break;
         case this.TYPE.EQUAL:
           this.state = this.STATES.START;
-	  this.calculate_remote();
-	  break;
-	default:
-	   alert("invalid operation!");
+	        this.calculate_remote();
+	        break;
+	      default:
+	        alert("invalid operation!");
       }
       break;
+
    case this.STATES.E:
-     switch (type) {
-	case this.TYPE.DIGIT:
-	  // stay same state
-	  this.appendDisplay(value);
-	  break;
-	case this.TYPE.DOT:
-	  // stay same state
-	  break;
-	case this.TYPE.OPERATION:
-	  this.state = this.STATES.C;
-	  this.calculate_remote();
-	  this.opt = value;
-	  break;
-	case this.TYPE.EQUAL:
-	  this.state = this.STATES.START;
-	  this.calculate_remote();
-	  break;
-	default:
-	   alert("invalid operation!");
+      switch (type) {
+	      case this.TYPE.DIGIT:
+	        // stay same state
+	        this.appendDisplay(value);
+	        break;
+	      case this.TYPE.DOT:
+	        // stay same state
+	        break;
+	      case this.TYPE.OPERATION:
+	        this.state = this.STATES.C;
+	        this.calculate_remote();
+	        this.opt = value;
+	        break;
+	      case this.TYPE.EQUAL:
+	        this.state = this.STATES.START;
+	        this.calculate_remote();
+	        break;
+	      default:
+	        alert("invalid operation!");
      }
   }
 
 }
 
-var lastKeyValue;
+//to record which key is pressed last time
+//var lastKeyValue;
 
 $(document).ready(function() {
   var basicCal = new BasicCalculator(document.getElementById("cal-display"));
@@ -285,8 +338,11 @@ $(document).ready(function() {
   });
   
   $(document).keypress(function(e) {
+    if ($('#cal-display').is(':focus'))
+      return;
     var value = String.fromCharCode(e.charCode);
     $('a[data-value="'+ value  +'"]').click();
+    
     // bug: 2 simultaneous clicking may cause some key keep inactive state
     //$('a[data-value="'+ value  +'"]').addClass("active");
     //lastKeyValue = value;
@@ -296,7 +352,5 @@ $(document).ready(function() {
     // challenge: detect key charcode and remove its "active" class
     //$('a[data-value="'+ lastKeyValue  +'"]').removeClass("active");
   });
-
-
   
 });

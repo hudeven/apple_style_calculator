@@ -47,15 +47,22 @@ class __TwigTemplate_c445647690fc247631d7b00c8f143d069552aff339a65abe787b162f6d1
 
     <div class=\"container col-md-6 col-md-offset-3\">
       <div class=\"row\">
+            <div id=\"cal-error\"></div>
+      </div>
+
+      <div class=\"row\">
             <input type=\"text\" id=\"cal-display\">
       </div>
 
       <div class=\"row\" id=\"cal-panel\">
           
             <div class=\"btn-group btn-group-justified\">
-              <a href=\"#\" class=\"btn-clear btn btn-default span1\" id=\"btn-clear\">C</a>
-              <a href=\"#\" class=\"btn-general btn btn-default\" >&plusmn;</a>
-              <a href=\"#\" class=\"btn-general btn btn-default\" >%</a>
+              <a href=\"#\" class=\"btn-clear btn btn-default span1\" id=\"btn-clear\" data-type=\"clr\" data-value=\"c\">C</a>
+
+              <a href=\"#\" class=\"btn-general btn btn-default\" data-type=\"rev\" data-value=\"r\">&plusmn;</a>
+
+              <a href=\"#\" class=\"btn-general btn btn-default\" data-type=\"per\" data-value=\"%\">%</a>
+
               <a href=\"#\" class=\"btn-general btn btn-warning\" data-type=\"opt\" data-value=\"/\">&divide;</a>
             </div>
           
@@ -124,6 +131,6 @@ class __TwigTemplate_c445647690fc247631d7b00c8f143d069552aff339a65abe787b162f6d1
 
     public function getDebugInfo()
     {
-        return array (  114 => 14,  111 => 13,  104 => 10,  101 => 9,  38 => 16,  36 => 13,  33 => 12,  31 => 9,  21 => 1,);
+        return array (  121 => 14,  118 => 13,  111 => 10,  108 => 9,  38 => 16,  36 => 13,  33 => 12,  31 => 9,  21 => 1,);
     }
 }

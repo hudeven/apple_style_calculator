@@ -1,6 +1,8 @@
 <?php
 namespace Acme\CalculatorBundle\Calculators;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 class OPERATION {
     const ADD       = "add";
     const SUBTRACT  = "subtract";
@@ -9,7 +11,32 @@ class OPERATION {
 }
 
 class BasicCalculator {
-    private $opt, $op1 , $op2;
+    
+    /**
+     * @Assert\Choice(
+     *     choices = {"add", "subtract", "multiply","divide"},
+     *      message = "invalid operation!"
+     * )
+     */
+    public $opt; // operation string
+
+    /**
+     * @Assert\Type(
+     *     type="numeric",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
+     */
+    private $op1; // the first operand
+
+    /**
+     * @Assert\Type(
+     *     type="numeric",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
+     */
+    private $op2; // the second operand
+
+    const INFINITE_VALUE = "INF";
     
     public function __construct($opt, $op1, $op2){
 	    $this->opt = $opt;
@@ -18,7 +45,7 @@ class BasicCalculator {
     }
 
     public function execute(){
-	$result = 0;
+	   $result = 0;
       /*
         switch ($this->opt){
 	    case OPERATION::ADD:
@@ -37,6 +64,7 @@ class BasicCalculator {
 		$result = 0;
 	}
     */
+
     $method = $this->opt;
     $result = $this->$method();
 	return $result;
@@ -55,7 +83,20 @@ class BasicCalculator {
     }
 
     public function divide () {
-        return $this->op1 / $this->op2;
+        $op2 = (string)$this->op2;
+        
+        if ($op2 == '' || $op2 == '0') {
+            $result = self::INFINITE_VALUE;
+        } else if ($op2 == self::INFINITE_VALUE) {
+            if ($this->op1 == self::INFINITE_VALUE)
+                $result = self::INFINITE_VALUE;
+            else
+                $result = 0;
+        } else {
+            $result = $this->op1 / $this->op2;
+        }
+
+        return $result;
     }
 
 }
