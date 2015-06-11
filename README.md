@@ -6,7 +6,7 @@ Front end:
 
             imitate apple's calculator UI by Bootstrap
             imitate apple's calculator logic by a State Machine, see @AcmeCalculatorBundle/docs/calculator_state_machine.jpg
-            call remote server API to calculate result
+            call remote server API by jQuert and AJAX to calculate result
 
 Back end:   
 
@@ -22,6 +22,7 @@ Bugs:
 
             500 server internal error when using supper large operands
             No effect on buttons when using keyboard
+            Calling server API by asynchronous AJAX get brings slow response
             
 
 ==========
