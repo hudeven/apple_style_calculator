@@ -5,7 +5,7 @@
 */
 function BasicCalculator (display) {
   this.display = display; // <input type=text ...> element
-  this.MAX_DISPLAY_LENGTH = 1000;
+  this.MAX_DISPLAY_LENGTH = 20;
   this.INFINITE_VALUE = "INF";
 
   this.STATES =  {
