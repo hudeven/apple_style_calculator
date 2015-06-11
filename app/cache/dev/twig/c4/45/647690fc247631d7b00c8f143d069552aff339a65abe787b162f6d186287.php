@@ -47,7 +47,7 @@ class __TwigTemplate_c445647690fc247631d7b00c8f143d069552aff339a65abe787b162f6d1
 
     <div class=\"container col-md-6 col-md-offset-3\">
       <div class=\"row\">
-            <div class=\"uneditable-input\" id=\"cal-display\"></div>
+            <input type=\"text\" id=\"cal-display\">
       </div>
 
       <div class=\"row\" id=\"cal-panel\">

@@ -146,22 +146,13 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
         }
 
         // homepage
-        if (rtrim($pathinfo, '/') === '') {
-            if (substr($pathinfo, -1) !== '/') {
-                return $this->redirect($pathinfo.'/', 'homepage');
-            }
-
-            return array (  '_controller' => 'AppBundle\\Controller\\DefaultController::indexAction',  '_route' => 'homepage',);
+        if (0 === strpos($pathinfo, '/app') && preg_match('#^/app/(?P<name>[^/]++)$#s', $pathinfo, $matches)) {
+            return $this->mergeDefaults(array_replace($matches, array('_route' => 'homepage')), array (  '_controller' => 'AppBundle\\Controller\\DefaultController::testAction',));
         }
 
         // hello
         if (0 === strpos($pathinfo, '/hello') && preg_match('#^/hello/(?P<name>[^/\\.]++)(?:\\.(?P<_format>html|xml|json))?$#s', $pathinfo, $matches)) {
             return $this->mergeDefaults(array_replace($matches, array('_route' => 'hello')), array (  '_format' => 'html',  '_controller' => 'AppBundle\\Controller\\DefaultController::helloAction',));
-        }
-
-        // app_default_add
-        if (0 === strpos($pathinfo, '/add') && preg_match('#^/add/(?P<op1>[^/]++)/(?P<op2>[^/]++)$#s', $pathinfo, $matches)) {
-            return $this->mergeDefaults(array_replace($matches, array('_route' => 'app_default_add')), array (  '_controller' => 'AppBundle\\Controller\\DefaultController::addAction',));
         }
 
         // _welcome

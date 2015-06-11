@@ -12,11 +12,17 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        // return $this->render('default/index.html.twig');
-	 return $this->redirectToRoute('hello', array('name' => 'steven'));
-	//throw $this->createNotFoundException();
-	//throw new \Exception('Something went horribly wrong!');
+        return $this->render('default/index.html.twig');
     }
+
+    /**
+     * @Route("/app/{name}", name="homepage")
+     */
+    public function testAction($name)
+    {
+        return $this->render('default/index.html.twig');
+    }
+
 
     /**
      * @Route("/hello/{name}.{_format}",
@@ -31,16 +37,5 @@ class DefaultController extends Controller
         return $this->render('default/hello.'.$_format.'.twig', array(
            'name' => $name
           ));
-    }
-
-    /**
-     * @Route("/add/{op1}/{op2}")
-     */
-    public function addAction($op1, $op2)
-    {
-	    $result = $op1 + $op2;
-	    return $this->render('default/add.html.twig', array(
-	    'result' => $result,
-	    ));
     }
 }
