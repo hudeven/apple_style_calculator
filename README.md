@@ -5,7 +5,7 @@ It's a test project for Quicken Loans interview.
 Front end:  
 
             imitate apple's calculator UI by Bootstrap
-            imitate apple's calculator logic by a State Machine, javascript, jQuery
+            imitate apple's calculator logic by a State Machine, see @AcmeCalculatorBundle/docs/calculator_state_machine.jpg
             call remote server API to calculate result
 
 Back end:   
@@ -15,6 +15,7 @@ Back end:
             Use Symfony Validation to valid operation and operands
             Create unite tests for BasicCalculator
             Create functional tests for CalculatorController
+            Build a new bundle AcmeCalculatorBundle for above. 
             Deploy app on AWS: http://calculator.hudeven.com
 
 Bugs:       
